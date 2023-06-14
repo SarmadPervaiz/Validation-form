@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- Add Font Awesome CSS for eye icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 50px;
+        }
+
+        .error-message {
+            color: red;
+        }
+
+        .success-message {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-3">
+        <div class="card w-50 m-auto">
+            <!-- Card content -->
+            <div class="card-body">
+                <h5 class="card-title">Sign Up</h5>
+                <!-- Form -->
+                <form onsubmit="return validateForm()">
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label for="fullname">Full Name</label>
+                        <input type="text" class="form-control" id="fullname" placeholder="Enter your full name"
+                            required>
+                        <div id="fullname-error" class="text-danger"></div>
+                    </div>
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Enter a username" required>
+                        <div id="username-error" class="text-danger"></div>
+                    </div>
+                    <!-- Phone Number -->
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="text" class="form-control" id="phone" placeholder="Enter your phone number"
+                            required>
+                        <div id="phone-error" class="text-danger"></div>
+                    </div>
+                    <!-- Email Address -->
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email address"
+                            required>
+                        <div id="email-error" class="text-danger"></div>
+                    </div>
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" placeholder="Enter a password"
+                                required>
+                            <div class="input-group-append">
+                                <button id="showPasswordButton" class="btn btn-outline-secondary" type="button">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="password-error" class="text-danger"></div>
+                    </div>
+                    <!-- Program Dropdown -->
+                    <div class="form-group">
+                        <label for="ProgramDropdown">Program</label>
+                        <select class="form-control" id="ProgramDropdown" onchange="toggleDropdown()" required>
+                            <option value="">Select program</option>
+                            <option value="BS">BS</option>
+                            <option value="MS">MS</option>
+                        </select>
+                    </div>
+                    <!-- Duration Dropdown -->
+                    <div class="form-group" id="selectedDropdown" style="display: none;">
+                        <label for="selectedDuration">Duration</label>
+                        <select class="form-control" id="selectedDuration" required>
+                            <option value="">Select years</option>
+                        </select>
+                        <div id="selectedDropdown-error" class="text-danger"></div>
+                    </div>
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                <!-- Success Message -->
+                <div id="successMessage" class="text-success mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Add Bootstrap JS and Font Awesome JS for eye icon -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        // Password toggle
+        var showPasswordButton = document.getElementById("showPasswordButton");
+        var passwordInput = document.getElementById("password");
+
+        showPasswordButton.addEventListener("click", function () {
+            var type1 = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+            passwordInput.setAttribute("type", type1);
+            showPasswordButton.classList.toggle("active");
+        });
+
+        function validateForm() {
+            var isValid = true;
+
+            // Reset error messages
+            document.getElementById('fullname-error').textContent = '';
+            document.getElementById('username-error').textContent = '';
+            document.getElementById('phone-error').textContent = '';
+            document.getElementById('email-error').textContent = '';
+            document.getElementById('password-error').textContent = '';
+            document.getElementById('selectedDropdown-error').textContent = '';
+
+            var fullname = document.getElementById('fullname').value.trim();
+            var username = document.getElementById('username').value.trim();
+            var phone = document.getElementById('phone').value.trim();
+            var email = document.getElementById('email').value.trim();
+            var password = document.getElementById('password').value;
+            var program = document.getElementById('ProgramDropdown').value;
+            var duration = document.getElementById('selectedDuration').value;
+
+            // Full Name validation
+            if (fullname === '') {
+                document.getElementById('fullname-error').textContent = 'Please enter your full name.';
+                isValid = false;
+            }
+
+            // Username validation
+            if (username === '') {
+                document.getElementById('username-error').textContent = 'Please enter a username.';
+                isValid = false;
+            }
+
+            // Phone Number validation
+            if (phone === '') {
+                document.getElementById('phone-error').textContent = 'Please enter your phone number.';
+                isValid = false;
+            } else if (!/^\d{10}$/.test(phone)) {
+                document.getElementById('phone-error').textContent = 'Please enter a valid 10-digit phone number.';
+                isValid = false;
+            }
+
+            // Email validation
+            if (email === '') {
+                document.getElementById('email-error').textContent = 'Please enter your email address.';
+                isValid = false;
+            } else if (!/\S+@\S+\.\S+/.test(email)) {
+                document.getElementById('email-error').textContent = 'Please enter a valid email address.';
+                isValid = false;
+            }
+
+            // Password validation
+            if (password === '') {
+                document.getElementById('password-error').textContent = 'Please enter a password.';
+                isValid = false;
+            } else if (password.length < 8) {
+                document.getElementById('password-error').textContent = 'Password must be at least 8 characters long.';
+                isValid = false;
+            } else if (!/\d/.test(password)) {
+                document.getElementById('password-error').textContent = 'Password must contain at least one digit.';
+                isValid = false;
+            } else if (!/[a-zA-Z]/.test(password)) {
+                document.getElementById('password-error').textContent = 'Password must contain at least one letter.';
+                isValid = false;
+            }
+
+            // Duration validation
+            if (program === 'BS' && duration === '2yrs') {
+                document.getElementById('selectedDropdown-error').textContent = 'BS program should be 4 years.';
+                isValid = false;
+            } else if (program === 'MS' && duration === '4yrs') {
+                document.getElementById('selectedDropdown-error').textContent = 'MS program should be 2 years.';
+                isValid = false;
+            }
+
+            if (isValid) {
+                document.getElementById('successMessage').textContent = 'Form submitted successfully!';
+                return false; // Prevent form submission for demonstration purposes
+            } else {
+                return false; // Prevent form submission
+            }
+        }
+
+        function toggleDropdown() {
+            var program = document.getElementById('ProgramDropdown').value;
+            var selectedDropdown = document.getElementById('selectedDropdown');
+
+            if (program === '') {
+                selectedDropdown.style.display = 'none';
+            } else {
+                selectedDropdown.style.display = 'block';
+                if (program === 'BS') {
+                    document.getElementById('selectedDuration').innerHTML =
+                        '<option value="">Select years</option><option value="4yrs">4 years</option>';
+                } else if (program === 'MS') {
+                    document.getElementById('selectedDuration').innerHTML =
+                        '<option value="">Select years</option><option value="2yrs">2 years</option>';
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
